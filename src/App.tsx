@@ -1,121 +1,139 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
 import './App.css'
+import { useState } from 'react'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [selectedCountry, setSelectedCountry] = useState('')
+  const [city, setCity] = useState('')
+  const countriesCities = {
+    USA: ['New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix'],
+    France: ['Paris', 'Lyon', 'Marseille', 'Nice'],
+    Japan: ['Tokyo', 'Osaka', 'Kyoto', 'Yokohama'],
+    Brazil: ['Rio de Janeiro', 'Sao Paulo', 'Brasilia', 'Salvador'],
+    // Add more countries and cities as needed
+  }
+  const cities = selectedCountry ? countriesCities[selectedCountry] || [] : []
+
+  const handleCountryChange = (e) => {
+    setSelectedCountry(e.target.value)
+    setCity('')
+  }
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
+    <div className="app-container">
+      <header>
+        <div className="container">
+          <h1 className="logo">BookingService</h1>
+          <nav>
+            <ul>
+              <li><a href="index.html">Home</a></li>
+              <li><a href="listing.html">Listings</a></li>
+              <li><a href="login.html">Login</a></li>
+              <li><a href="register.html">Register</a></li>
+            </ul>
+          </nav>
         </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+      </header>
 
-      <div className="ticks"></div>
+      <main>
+        <section className="hero">
+          <div className="container">
+            <h2>Find your perfect stay</h2>
+            <form className="search-form" onSubmit={(e) => e.preventDefault()}>
+              <div className="field">
+                <label>Country</label>
+                <select value={selectedCountry} onChange={handleCountryChange}>
+                  <option value="">Select Country</option>
+                  {Object.keys(countriesCities).map(c => (
+                    <option key={c} value={c}>{c}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="field">
+                <label>City</label>
+                <input
+                  list="city-list"
+                  placeholder="Type or select city"
+                  value={city}
+                  onChange={e => setCity(e.target.value)}
+                />
+                <datalist id="city-list">
+                  {cities.map(c => (
+                    <option key={c} value={c} />
+                  ))}
+                </datalist>
+              </div>
+              <div className="field">
+                <label>Guests</label>
+                <select>
+                  <option>1 guest</option>
+                  <option>2 guests</option>
+                  <option>3 guests</option>
+                  <option>4+ guests</option>
+                </select>
+              </div>
+              <button type="submit">Search</button>
+            </form>
+          </div>
+        </section>
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+        <section className="listings">
+          <div className="container">
+            <h2>Featured Listings</h2>
+            <div className="listing-grid">
+              {/* Listing Card 1 */}
+              <div className="listing-card">
+                <img src="../assets/placeholder.svg" alt="Cozy Apartment" />
+                <div className="listing-info">
+                  <h3>Cozy Apartment in City Center</h3>
+                  <p className="location">New York, USA</p>
+                  <div className="rating">⭐⭐⭐⭐☆ (4.2)</div>
+                  <p className="price">$120/night</p>
+                </div>
+                <a href="listing-details.html" className="btn-primary">View Details</a>
+              </div>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
+              {/* Listing Card 2 */}
+              <div className="listing-card">
+                <img src="../assets/placeholder.svg" alt="Beach House" />
+                <div className="listing-info">
+                  <h3>Beach House with Ocean View</h3>
+                  <p className="location">Malibu, USA</p>
+                  <div className="rating">⭐⭐⭐⭐⭐ (5.0)</div>
+                  <p className="price">$250/night</p>
+                </div>
+                <a href="listing-details.html" className="btn-primary">View Details</a>
+              </div>
+
+              {/* Listing Card 3 */}
+              <div className="listing-card">
+                <img src="../assets/placeholder.svg" alt="Mountain Cabin" />
+                <div className="listing-info">
+                  <h3>Mountain Cabin Retreat</h3>
+                  <p className="location">Aspen, USA</p>
+                  <div className="rating">⭐⭐⭐☆☆ (3.8)</div>
+                  <p className="price">$180/night</p>
+                </div>
+                <a href="listing-details.html" className="btn-primary">View Details</a>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer>
+        <div className="container">
+          <p>&copy; 2026 BookingService. All rights reserved.</p>
+          <nav>
+            <ul>
+              <li><a href="#">About</a></li>
+              <li><a href="#">Contact</a></li>
+              <li><a href="#">Terms</a></li>
+              <li><a href="#">Privacy</a></li>
+            </ul>
+          </nav>
+        </div>
+      </footer>
+    </div>
   )
 }
 
