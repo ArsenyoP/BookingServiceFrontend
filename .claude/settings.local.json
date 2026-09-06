@@ -1,7 +1,10 @@
 {
   "permissions": {
     "allow": [
-      "PowerShell(Get-Content *)"
+      "PowerShell(Get-Content *)",
+      "Bash(rtk wc *)",
+      "Bash(type *)",
+      "Bash(rtk read *)"
     ]
   }
 }
