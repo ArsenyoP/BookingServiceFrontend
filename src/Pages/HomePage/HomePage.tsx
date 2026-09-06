@@ -20,6 +20,7 @@ const HomePage = () => {
 
   return (
     <div className="app-container">
+      <title>BookingService - Find Your Stay</title>
       <header>
         <div className="container">
           <h1 className="logo">BookingService</h1>
