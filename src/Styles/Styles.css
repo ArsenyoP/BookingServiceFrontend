@@ -159,7 +159,7 @@ footer a {
 .listing-card:hover {
     transform: translateY(-5px);
 }
-.listing-card img {
+.listing-card .listing-image {
     height: 180px;
     object-fit: cover;
 }
@@ -570,3 +570,4 @@ footer a {
         margin: 0 auto 0.5rem;
     }
 }
+

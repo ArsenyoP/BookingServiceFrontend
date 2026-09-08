@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Header } from '../../Components/Header';
 import type { ListingResponseInterface } from '../../Interfaces/ListingInterfaces';
 import { formatLocation } from '../../Utils/LocationUtils';
+// import './HomePageStyle.css';
 
 const HomePage = () => {
 
@@ -96,8 +97,7 @@ const HomePage = () => {
               {/* Listing Card 1 */}
               {lisitngs.map( (listing) => {
                 return <div className="listing-card" key={listing.id}>
-                {/* Шлях без 'public' та зворотних слешів */}
-                <img src="/Images/test.png" alt={listing.title} className="listing-image" />
+                <img src="/Images/hotel.jpg" alt={listing.title} className="listing-image" />
                 
                 <div className="listing-info">
                   <h3>{listing.title}</h3>
@@ -106,10 +106,10 @@ const HomePage = () => {
                   <div className="product-rating-container">
                     <img
                       className="product-rating-stars"
-                      src={`/Images/Rating/rating-${Math.round((listing.averageRating || 0) * 10)}.png`}
+                      src={`/Images/Rating/rating-${Math.round((listing.averageRating || 0) * 2) * 5}.png`}
                       alt={`Rating: ${listing.averageRating}`}
                     />
-                    <div className="product-rating-count link-primary">87</div>
+                    <div className="product-rating-count link-primary">{listing.reviewsCount || 0}</div>
                   </div>
                 </div>
                 
