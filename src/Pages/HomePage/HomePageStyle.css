@@ -1,0 +1,26 @@
+/* Контейнер рейтингу */
+.product-rating-container {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    margin: 10px 0 !important;
+  }
+  
+  /* Фіксуємо ширину, а висота підлаштується сама */
+  .product-rating-stars {
+    width: 100px !important;       /* Фіксована ширина для рядка зірочок */
+    height: auto !important;        /* Автоматична висота збереже природні пропорції */
+    max-width: none !important;
+    max-height: none !important;
+    object-fit: contain !important; /* Не обрізає та не деформує зображення */
+    display: inline-block !important;
+  }
+  
+  /* Число рейтингу */
+  .product-rating-count {
+    font-size: 14px !important;
+    color: #0066cc !important;
+    line-height: 1 !important;
+    margin: 0 !important;
+  }

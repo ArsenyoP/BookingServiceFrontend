@@ -4,7 +4,8 @@
       "PowerShell(Get-Content *)",
       "Bash(rtk wc *)",
       "Bash(type *)",
-      "Bash(rtk read *)"
+      "Bash(rtk read *)",
+      "Bash(rtk ls *)"
     ]
   }
 }

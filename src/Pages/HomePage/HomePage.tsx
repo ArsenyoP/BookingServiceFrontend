@@ -1,4 +1,8 @@
-import React, { useState } from 'react';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { Header } from '../../Components/Header';
+import type { ListingResponseInterface } from '../../Interfaces/ListingInterfaces';
+import { formatLocation } from '../../Utils/LocationUtils';
 
 const HomePage = () => {
 
@@ -17,23 +21,31 @@ const HomePage = () => {
     setCity('')
   }
 
+  const [lisitngs, setListings] = useState<ListingResponseInterface[]>([])
+  //create interface for listings
+  //map listings 
+  
+  useEffect( () => {
+    const fetchPoducts  = async () =>{
+      try {
+        let result = await axios.get("/listing");
+        
+        console.log("Отримані дані з API:", result.data, result.data.type);
+  
+        setListings(result.data);
+      } catch (error) {
+        console.error("Помилка під час завантаження даних:", error);
+      }
+    }
 
+    fetchPoducts();
+  }, [])
+
+  
   return (
-    <div className="app-container">
-      <title>BookingService - Find Your Stay</title>
-      <header>
-        <div className="container">
-          <h1 className="logo">BookingService</h1>
-          <nav>
-            <ul>
-              <li><a href="index.html">Home</a></li>
-              <li><a href="listing.html">Listings</a></li>
-              <li><a href="login.html">Login</a></li>
-              <li><a href="register.html">Register</a></li>
-            </ul>
-          </nav>
-        </div>
-      </header>
+      <div className="app-container home-page">      <title>BookingService - Find Your Stay</title>
+
+      <Header/>
 
       <main>
         <section className="hero">
@@ -82,40 +94,29 @@ const HomePage = () => {
             <h2>Featured Listings</h2>
             <div className="listing-grid">
               {/* Listing Card 1 */}
-              <div className="listing-card">
-                <img src="../assets/placeholder.svg" alt="Cozy Apartment" />
+              {lisitngs.map( (listing) => {
+                return <div className="listing-card" key={listing.id}>
+                {/* Шлях без 'public' та зворотних слешів */}
+                <img src="/Images/test.png" alt={listing.title} className="listing-image" />
+                
                 <div className="listing-info">
-                  <h3>Cozy Apartment in City Center</h3>
-                  <p className="location">New York, USA</p>
-                  <div className="rating">⭐⭐⭐⭐☆ (4.2)</div>
-                  <p className="price">$120/night</p>
+                  <h3>{listing.title}</h3>
+                  <p className="location">{formatLocation(listing.country, listing.city)}</p>
+                  
+                  <div className="product-rating-container">
+                    <img
+                      className="product-rating-stars"
+                      src={`/Images/Rating/rating-${Math.round((listing.averageRating || 0) * 10)}.png`}
+                      alt={`Rating: ${listing.averageRating}`}
+                    />
+                    <div className="product-rating-count link-primary">87</div>
+                  </div>
                 </div>
+                
                 <a href="listing-details.html" className="btn-primary">View Details</a>
               </div>
-
-              {/* Listing Card 2 */}
-              <div className="listing-card">
-                <img src="../assets/placeholder.svg" alt="Beach House" />
-                <div className="listing-info">
-                  <h3>Beach House with Ocean View</h3>
-                  <p className="location">Malibu, USA</p>
-                  <div className="rating">⭐⭐⭐⭐⭐ (5.0)</div>
-                  <p className="price">$250/night</p>
-                </div>
-                <a href="listing-details.html" className="btn-primary">View Details</a>
-              </div>
-
-              {/* Listing Card 3 */}
-              <div className="listing-card">
-                <img src="../assets/placeholder.svg" alt="Mountain Cabin" />
-                <div className="listing-info">
-                  <h3>Mountain Cabin Retreat</h3>
-                  <p className="location">Aspen, USA</p>
-                  <div className="rating">⭐⭐⭐☆☆ (3.8)</div>
-                  <p className="price">$180/night</p>
-                </div>
-                <a href="listing-details.html" className="btn-primary">View Details</a>
-              </div>
+              } )}
+              
             </div>
           </div>
         </section>
