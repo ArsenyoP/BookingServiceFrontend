@@ -8,4 +8,5 @@ export interface ListingResponseInterface{
     pricePerNight: number;
     maxGuests: number;
     averageRating: number;
+    reviewCount: number;
 }
