@@ -1,22 +1,11 @@
+import { Header } from "../../Components/Header";
 
 const ListingDetailsPage = () => {
   
   return (
     <>
     <title>Details</title>
-      <header>
-        <div className="container">
-          <h1 className="logo">BookingService</h1>
-          <nav>
-            <ul>
-              <li><a href="">Home</a></li>
-              <li><a href="">Listings</a></li>
-              <li><a href="">Login</a></li>
-              <li><a href="">Register</a></li>
-            </ul>
-          </nav>
-        </div>
-      </header>
+      <Header/>
 
       <main>
         <div className="container">
