@@ -5,6 +5,7 @@ import type { ListingResponseInterface } from '../../Interfaces/ListingInterface
 import { formatLocation } from '../../Utils/LocationUtils';
 import { HomeSearchBar } from '../../Components/HomePage/HomeSearchBar';
 import { ListingGrid } from '../../Components/HomePage/ListingsGrid';
+import { Footer } from '../../Components/Footer/Footer';
 // import './HomePageStyle.css';
 
 const HomePage = () => {
@@ -47,19 +48,7 @@ const HomePage = () => {
         </section>
       </main>
 
-      <footer>
-        <div className="container">
-          <p>&copy; 2026 BookingService. All rights reserved.</p>
-          <nav>
-            <ul>
-              <li><a href="#">About</a></li>
-              <li><a href="#">Contact</a></li>
-              <li><a href="#">Terms</a></li>
-              <li><a href="#">Privacy</a></li>
-            </ul>
-          </nav>
-        </div>
-      </footer>
+      <Footer/>
     </div>
   );
 };

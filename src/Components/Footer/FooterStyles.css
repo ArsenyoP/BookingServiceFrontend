@@ -1,0 +1,31 @@
+footer {
+    padding: 20px 0;
+    text-align: center;
+  }
+  
+  footer .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
+  
+  footer p {
+    margin: 0;
+  }
+  
+  footer nav ul {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    gap: 20px; /* Відстань між посиланнями */
+  }
+  
+  footer nav a {
+    text-decoration: none;
+    color: inherit;
+  }
