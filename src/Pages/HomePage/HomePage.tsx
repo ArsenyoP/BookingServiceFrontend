@@ -2,7 +2,6 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Header } from '../../Components/Header';
 import type { ListingResponseInterface } from '../../Interfaces/ListingInterfaces';
-import { formatLocation } from '../../Utils/LocationUtils';
 import { HomeSearchBar } from '../../Components/HomePage/HomeSearchBar';
 import { ListingGrid } from '../../Components/HomePage/ListingsGrid';
 import { Footer } from '../../Components/Footer/Footer';
@@ -10,11 +9,8 @@ import { Footer } from '../../Components/Footer/Footer';
 
 const HomePage = () => {
 
-  
-
   const [listings, setListings] = useState<ListingResponseInterface[]>([])
-  //create interface for listings
-  //map listings 
+   
   
   useEffect( () => {
     const fetchPoducts  = async () =>{

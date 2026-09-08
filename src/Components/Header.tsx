@@ -1,7 +1,9 @@
 export const Header = () => {
     return <header>
     <div className="container">
+    <a href="/" className="logo-link">
       <h1 className="logo">BookingService</h1>
+    </a>
       <nav>
         <ul>
           <li><a href="index.html">Home</a></li>
