@@ -1,7 +1,33 @@
 import { Header } from "../../Components/Header";
+import { useState } from "react";
+import "./ListingDetailsPageStyle.css";
 
 const ListingDetailsPage = () => {
-  
+  const images = [
+    "../../public/Images/2-slot-toaster-white.jpg",
+    "../../public/Images/3-piece-cooking-set.jpg",
+    "../../public/Images/bathroom-mat.jpg"
+  ];
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+
+  const openLightbox = (index) => {
+    setCurrentIndex(index);
+    setLightboxOpen(true);
+  };
+
+  const closeLightbox = () => {
+    setLightboxOpen(false);
+  };
+
+  const goToPrev = () => {
+    setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
+  };
+
+  const goToNext = () => {
+    setCurrentIndex((next) => (next + 1) % images.length);
+  };
+
   return (
     <>
     <title>Details</title>
@@ -11,11 +37,22 @@ const ListingDetailsPage = () => {
         <div className="container">
           <div className="listing-detail">
             <div className="listing-gallery">
-              <img src="../../public/Images/2-slot-toaster-white.jpg" alt="Main image" />
+              <img
+                src={images[currentIndex]}
+                alt="Main image"
+                onClick={() => openLightbox(currentIndex)}
+                style={{ cursor: 'pointer' }}
+              />
               <div className="thumbnails">
-                <img src="../../public/Images/2-slot-toaster-white.jpg" alt="Thumb 1" />
-                <img src="../../public/Images/3-piece-cooking-set.jpg" alt="Thumb 2" />
-                <img src="../../public\Images\bathroom-mat.jpg" alt="Thumb 3" />
+                {images.map((img, idx) => (
+                  <img
+                    key={idx}
+                    src={img}
+                    alt={`Thumb ${idx + 1}`}
+                    onClick={() => setCurrentIndex(idx)}
+                    className={currentIndex === idx ? "active" : ""}
+                  />
+                ))}
               </div>
             </div>
             <div className="listing-info">
@@ -113,6 +150,32 @@ const ListingDetailsPage = () => {
           </section>
         </div>
       </main>
+
+      {/* Lightbox Overlay */}
+      {lightboxOpen && (
+        <div className="lightbox-overlay" onClick={closeLightbox}>
+          <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>
+            <button className="lightbox-close" onClick={closeLightbox}>
+              &times;
+            </button>
+            <img src={images[currentIndex]} alt="Enlarged" />
+            <div className="lightbox-nav">
+              <button className="lightbox-prev" onClick={(e) => {
+                e.stopPropagation();
+                goToPrev();
+              }}>
+                &#9664;
+              </button>
+              <button className="lightbox-next" onClick={(e) => {
+                e.stopPropagation();
+                goToNext();
+              }}>
+                &#9654;
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <footer>
         <div className="container">
