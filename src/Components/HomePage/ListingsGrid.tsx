@@ -27,7 +27,7 @@ export const ListingGrid = ({listings}: ListingsGridProps) => {
           </div>
         </div>
         
-        <a href="listing-details.html" className="btn-primary">View Details</a>
+        <a href={`/listing-details/${listing.id}`} className="btn-primary">View Details</a>
       </div>
       } )}
       
