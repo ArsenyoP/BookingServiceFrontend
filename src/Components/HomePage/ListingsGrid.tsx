@@ -1,5 +1,6 @@
 import type { ListingResponseInterface } from "../../Interfaces/ListingInterfaces"
 import { formatLocation } from "../../Utils/LocationUtils"
+import { StartRatingComponent } from "../Common/StarsRatingComponent"
 
 interface ListingsGridProps{
     listings: ListingResponseInterface[]
@@ -17,14 +18,9 @@ export const ListingGrid = ({listings}: ListingsGridProps) => {
           <h3>{listing.title}</h3>
           <p className="location">{formatLocation(listing.country, listing.city)}</p>
           
-          <div className="product-rating-container">
-            <img
-              className="product-rating-stars"
-              src={`/Images/Rating/rating-${Math.round((listing.averageRating || 0) * 2) * 5}.png`}
-              alt={`Rating: ${listing.averageRating}`}
-            />
-            <div className="product-rating-count link-primary">{listing.reviewsCount || 0}</div>
-          </div>
+          <StartRatingComponent
+           averageRating={listing.averageRating}
+           reviewsCount={listing.reviewsCount}/>
         </div>
         
         <a href={`/listing-details/${listing.id}`} className="btn-primary">View Details</a>
