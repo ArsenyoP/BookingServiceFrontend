@@ -1,13 +1,43 @@
-import { Header } from "../../Components/Header";
-import { useState } from "react";
+import { Header } from "../../Components/Common/Header";
+import { useEffect, useState } from "react";
 import "./ListingDetailsPageStyle.css";
+import { useParams } from "react-router-dom";
+import type { ListingResponseInterface } from "../../Interfaces/ListingInterfaces";
+import axios from "axios";
+import { formatLocation } from "../../Utils/LocationUtils";
+import { StartRatingComponent } from "../../Components/Common/StarsRatingComponent";
+import ServerErrorPage from "../ServerErrorPage/ServerErrorPage";
 
 const ListingDetailsPage = () => {
+  const { id } = useParams<{ id: string }>();
+  const [listing, setListing] = useState<ListingResponseInterface>();
+
+  const [loading, setLoading] = useState<boolean>(true);
+  const[error, setError] = useState<boolean>(false);
+
+  useEffect(() => {
+    const fetchListing = async () => {
+      try {
+        let result = await axios.get(`listing/${id}`);
+        setListing(result.data);
+        console.log(result.data);
+      } catch (error) {
+        console.error("Error loading listing:", error);
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (id) fetchListing();
+  }, [id]);
+
   const images = [
     "../../public/Images/2-slot-toaster-white.jpg",
     "../../public/Images/3-piece-cooking-set.jpg",
     "../../public/Images/bathroom-mat.jpg"
   ];
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
 
@@ -27,6 +57,21 @@ const ListingDetailsPage = () => {
   const goToNext = () => {
     setCurrentIndex((next) => (next + 1) % images.length);
   };
+
+  if (loading) {
+    return (
+      <>
+        <Header />
+        <main className="container">
+          <p>Loading details...</p>
+        </main>
+      </>
+    );
+  }
+
+  if(error){
+    return <ServerErrorPage/>
+  }
 
   return (
     <>
@@ -56,51 +101,41 @@ const ListingDetailsPage = () => {
               </div>
             </div>
             <div className="listing-info">
-              <h1>Cozy Apartment in City Center</h1>
-              <p className="location">New York, USA</p>
-              <div className="rating">
-                ⭐⭐⭐⭐☆ (4.2) <span>(128 reviews)</span>
+              <h1>{listing.title}</h1>
+              <p className="location">{formatLocation(listing.country,
+                 listing.city,
+                  listing.street ?? "",
+                   listing.houseNumber ?? "")}</p>
+              <div className="product-rating-container">
+                <StartRatingComponent
+                averageRating={listing.averageRating}
+                reviewsCount={listing.reviewsCount}/>
               </div>
-              <p className="price">$120/night</p>
-              <button className="btn-primary btn-block">Reserve Now</button>
+              <p className="price"></p>
+              <button className="btn-primary btn-block">Look for rooms</button>
             </div>
           </div>
 
           <section className="description">
-            <h2>About this space</h2>
+            <h2>About this hotel</h2>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+              {listing.description}
             </p>
           </section>
 
           <section className="amenities">
             <h2>Amenities</h2>
-            <div className="amenities-grid">
-              <div className="amenity-item">
-                <i className="icon wifi"></i>
-                <span>WiFi</span>
+            {listing?.amenities && listing.amenities.length > 0 ? (
+              <div className="amenities-scrollable">
+                {listing.amenities.map((amenity) => (
+                  <div key={amenity.amenityId} className="amenity-item">
+                    <span>{amenity.name}</span>
+                  </div>
+                ))}
               </div>
-              <div className="amenity-item">
-                <i className="icon kitchen"></i>
-                <span>Kitchen</span>
-              </div>
-              <div className="amenity-item">
-                <i className="icon ac"></i>
-                <span>Air Conditioning</span>
-              </div>
-              <div className="amenity-item">
-                <i className="icon parking"></i>
-                <span>Free Parking</span>
-              </div>
-              <div className="amenity-item">
-                <i className="icon washer"></i>
-                <span>Washer</span>
-              </div>
-              <div className="amenity-item">
-                <i className="icon elevator"></i>
-                <span>Elevator</span>
-              </div>
-            </div>
+            ) : (
+              <p className="no-amenities">No amenities information available.</p>
+            )}
           </section>
 
           <section className="host">
