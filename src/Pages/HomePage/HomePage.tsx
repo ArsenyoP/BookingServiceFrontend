@@ -1,11 +1,11 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Header } from '../../Components/Header';
+import { Header } from '../../Components/Common/Header';
 import type { ListingResponseInterface } from '../../Interfaces/ListingInterfaces';
 import { HomeSearchBar } from '../../Components/HomePage/HomeSearchBar';
 import { ListingGrid } from '../../Components/HomePage/ListingsGrid';
 import { Footer } from '../../Components/Footer/Footer';
-// import './HomePageStyle.css';
+import './HomePageStyle.css';
 
 const HomePage = () => {
 

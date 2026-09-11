@@ -9,24 +9,28 @@ interface ListingsGridProps{
 export const ListingGrid = ({listings}: ListingsGridProps) => {
     return <div className="container">
     <h2>Featured Listings</h2>
-    <div className="listing-grid">
-      {listings.map( (listing) => {
-        return <div className="listing-card" key={listing.id}>
-        <img src="/Images/hotel.jpg" alt={listing.title} className="listing-image" />
-        
-        <div className="listing-info">
-          <h3>{listing.title}</h3>
-          <p className="location">{formatLocation(listing.country, listing.city)}</p>
-          
-          <StartRatingComponent
-           averageRating={listing.averageRating}
-           reviewsCount={listing.reviewsCount}/>
+    {listings.length === 0 ? (
+        <p className="no-listings">No featured listings available at the moment.</p>
+    ) : (
+        <div className="listing-grid">
+          {listings.map( (listing) => {
+            return <div className="listing-card" key={listing.id}>
+            <img src="/Images/hotel.jpg" alt={listing.title} className="listing-image" />
+
+            <div className="listing-info">
+              <h3>{listing.title}</h3>
+              <p className="location">{formatLocation(listing.country, listing.city)}</p>
+
+              <StartRatingComponent
+               averageRating={listing.averageRating}
+               reviewsCount={listing.reviewsCount}/>
+            </div>
+
+            <a href={`/listing-details/${listing.id}`} className="btn-primary">View Details</a>
+          </div>
+          } )}
+
         </div>
-        
-        <a href={`/listing-details/${listing.id}`} className="btn-primary">View Details</a>
-      </div>
-      } )}
-      
-    </div>
+    )}
   </div>
 }
