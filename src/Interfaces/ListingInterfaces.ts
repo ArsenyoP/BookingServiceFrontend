@@ -1,3 +1,5 @@
+import type { AmenityInterface } from "./AmenitiesInterfaces/AmenityInterface";
+
 export interface ListingResponseInterface{
     id: string;
     title: string;
@@ -11,4 +13,5 @@ export interface ListingResponseInterface{
     maxGuests: number;
     averageRating: number;
     reviewsCount: number;
+    amenities: AmenityInterface[];
 }
