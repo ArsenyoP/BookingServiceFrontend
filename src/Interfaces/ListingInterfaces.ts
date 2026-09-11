@@ -5,6 +5,8 @@ export interface ListingResponseInterface{
     address: string;
     city: string;
     country: string;
+    street: string;
+    houseNumber: string;
     pricePerNight: number;
     maxGuests: number;
     averageRating: number;
