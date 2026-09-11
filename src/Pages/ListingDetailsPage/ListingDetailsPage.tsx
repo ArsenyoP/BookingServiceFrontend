@@ -7,10 +7,13 @@ import axios from "axios";
 import { formatLocation } from "../../Utils/LocationUtils";
 import { StartRatingComponent } from "../../Components/Common/StarsRatingComponent";
 import ServerErrorPage from "../ServerErrorPage/ServerErrorPage";
+import type { ReviewInterface } from "../../Interfaces/ReviewsInterfaces/ReviewInterface";
+import { formatDate } from "../../Utils/DateUtils";
 
 const ListingDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
   const [listing, setListing] = useState<ListingResponseInterface>();
+  const [reviews, setReviews] = useState<ReviewInterface[]>([]);
 
   const [loading, setLoading] = useState<boolean>(true);
   const[error, setError] = useState<boolean>(false);
@@ -29,8 +32,19 @@ const ListingDetailsPage = () => {
       }
     };
 
-    if (id) fetchListing();
-  }, [id]);
+    const fetchReviews = async () => {
+      try{
+        let result = await axios.get<ReviewInterface[]>(`reviews/${id}`)
+        setReviews(result.data);
+        console.log("Reviews:", result.data)
+      } catch(error){
+        console.error("Error loading listing:", error);
+      }
+    }
+
+    fetchListing();
+    fetchReviews();
+  }, []);
 
   const images = [
     "../../public/Images/2-slot-toaster-white.jpg",
@@ -140,36 +154,22 @@ const ListingDetailsPage = () => {
 
           <section className="reviews">
             <h2>
-              Reviews (<span id="review-count">128</span>)
+              Reviews (<span id="review-count">{listing.reviewsCount}</span>)
             </h2>
-            <div className="review-form">
-              <h3>Leave a review</h3>
-              <form id="reviewForm">
-                <div className="rating-input">
-                  <label>Rating:</label>
-                  <div className="stars">
-                    <span className="star" data-value="1">☆</span>
-                    <span className="star" data-value="2">☆</span>
-                    <span className="star" data-value="3">☆</span>
-                    <span className="star" data-value="4">☆</span>
-                    <span className="star" data-value="5">☆</span>
-                  </div>
-                  <input type="hidden" id="ratingValue" name="rating" value="0" />
-                </div>
-                <textarea placeholder="What did you love (or not) about your stay?" required></textarea>
-                <button type="submit" className="btn-primary">Submit Review</button>
-              </form>
-            </div>
+            
             <div className="review-list">
-              {/* Review cards would go here */}
-              <div className="review-card">
+              {reviews.map((review) => {
+                return <div className="review-card">
                 <div className="review-header">
-                  <h4>Emily R.</h4>
-                  <div className="review-rating">⭐⭐⭐⭐☆</div>
-                  <time dateTime="2024-05-12">May 12, 2024</time>
+                  <h4>{review.userName}</h4>
+                  <div className="review-rating">
+                    <StartRatingComponent reviewsCount={1} averageRating={review.score}/>
+                  </div>
+                  <time dateTime="2024-05-12">{formatDate(review.createdAt)}</time>
                 </div>
-                <p>Great location and very clean! The host was responsive and helpful.</p>
+                <p>{review.text}</p>
               </div>
+              })}
             </div>
           </section>
         </div>
