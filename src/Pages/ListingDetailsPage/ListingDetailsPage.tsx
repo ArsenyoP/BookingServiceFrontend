@@ -138,17 +138,6 @@ const ListingDetailsPage = () => {
             )}
           </section>
 
-          <section className="host">
-            <h2>About the Host</h2>
-            <div className="host-info">
-              <img src="../assets/placeholder.svg" alt="Host avatar" className="host-avatar" />
-              <div>
-                <h3>John Doe</h3>
-                <p>Superhost • Member since 2020</p>
-              </div>
-            </div>
-          </section>
-
           <section className="reviews">
             <h2>
               Reviews (<span id="review-count">128</span>)
