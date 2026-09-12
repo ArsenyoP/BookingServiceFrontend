@@ -9,9 +9,7 @@ import { StartRatingComponent } from "../../Components/Common/StarsRatingCompone
 import ServerErrorPage from "../ServerErrorPage/ServerErrorPage";
 import type { ReviewInterface } from "../../Interfaces/ReviewsInterfaces/ReviewInterface";
 import { formatDate } from "../../Utils/DateUtils";
-import { ListingGallery } from "../../Components/ListingDetails/ListingGallery";
 import { AmenitiesSection } from "../../Components/ListingDetails/AmenitiesSection";
-import { ReviewsSection } from "../../Components/ListingDetails/ReviewsSection";
 
 const ListingDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -55,6 +53,26 @@ const ListingDetailsPage = () => {
     "../../public/Images/bathroom-mat.jpg"
   ];
 
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+
+  const openLightbox = (index) => {
+    setCurrentIndex(index);
+    setLightboxOpen(true);
+  };
+
+  const closeLightbox = () => {
+    setLightboxOpen(false);
+  };
+
+  const goToPrev = () => {
+    setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
+  };
+
+  const goToNext = () => {
+    setCurrentIndex((next) => (next + 1) % images.length);
+  };
+
   if (loading) {
     return (
       <>
@@ -78,7 +96,25 @@ const ListingDetailsPage = () => {
       <main>
         <div className="container">
           <div className="listing-detail">
-            <ListingGallery images={images} />
+            <div className="listing-gallery">
+              <img
+                src={images[currentIndex]}
+                alt="Main image"
+                onClick={() => openLightbox(currentIndex)}
+                style={{ cursor: 'pointer' }}
+              />
+              <div className="thumbnails">
+                {images.map((img, idx) => (
+                  <img
+                    key={idx}
+                    src={img}
+                    alt={`Thumb ${idx + 1}`}
+                    onClick={() => setCurrentIndex(idx)}
+                    className={currentIndex === idx ? "active" : ""}
+                  />
+                ))}
+              </div>
+            </div>
             <div className="listing-info">
               <h1>{listing.title}</h1>
               <p className="location">{formatLocation(listing.country,
@@ -102,11 +138,15 @@ const ListingDetailsPage = () => {
             </p>
           </section>
 
-          <AmenitiesSection amenities={listing?.amenities || []} />
+          <AmenitiesSection amenities={listing.amenities}/>
 
-          <ReviewsSection reviews={reviews} />
+          <section className="reviews">
+            <h2>
+              Reviews (<span id="review-count">{listing.reviewsCount}</span>)
+            </h2>
             
-                          {reviews.map((review) => {
+            <div className="review-list">
+              {reviews.map((review) => {
                 return <div className="review-card">
                 <div className="review-header">
                   <h4>{review.userName}</h4>
@@ -119,9 +159,35 @@ const ListingDetailsPage = () => {
               </div>
               })}
             </div>
-          <section/>
-        <div/>
-      <main>
+          </section>
+        </div>
+      </main>
+
+      {/* Lightbox Overlay */}
+      {lightboxOpen && (
+        <div className="lightbox-overlay" onClick={closeLightbox}>
+          <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>
+            <button className="lightbox-close" onClick={closeLightbox}>
+              &times;
+            </button>
+            <img src={images[currentIndex]} alt="Enlarged" />
+            <div className="lightbox-nav">
+              <button className="lightbox-prev" onClick={(e) => {
+                e.stopPropagation();
+                goToPrev();
+              }}>
+                &#9664;
+              </button>
+              <button className="lightbox-next" onClick={(e) => {
+                e.stopPropagation();
+                goToNext();
+              }}>
+                &#9654;
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <footer>
         <div className="container">
@@ -129,8 +195,7 @@ const ListingDetailsPage = () => {
         </div>
       </footer>
 
-      <script src="../js/main.js"></script>
-    </main>
+    </>
   );
 };
 
