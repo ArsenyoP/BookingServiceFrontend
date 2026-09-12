@@ -1,3 +1,13 @@
+/* Fix: вимикає нативний drag зображень галереї (причина зависань при швидких кліках) */
+.listing-gallery img,
+.thumbnails img,
+.lightbox-content img {
+  -webkit-user-drag: none;
+  user-drag: none;
+  -webkit-touch-callout: none;
+  user-select: none;
+}
+
 /* Amenities styles */
 .amenities-scrollable {
   display: flex;
