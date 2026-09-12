@@ -12,10 +12,10 @@ export const ReviewsSection = ({ reviews }: ReviewsSectionProps) => {
       <h2>
         Reviews (<span id="review-count">{reviews.length}</span>)
       </h2>
-
+      {/* FIX KEY */}
       <div className="review-list">
         {reviews.map((review) => {
-          return <div className="review-card">
+          return <div key={review.id} className="review-card">
           <div className="review-header">
             <h4>{review.userName}</h4>
             <div className="review-rating">

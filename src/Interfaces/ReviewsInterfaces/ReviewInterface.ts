@@ -1,4 +1,5 @@
 export interface ReviewInterface{
+    id: string;
     score: number;
     text: string;
     userName: string;

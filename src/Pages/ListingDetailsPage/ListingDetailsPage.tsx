@@ -20,7 +20,6 @@ const IMAGES = [
 ];
 
 // Мінімальний інтервал (мс) між перемиканнями картинки - захист від спаму кліками
-const SWITCH_THROTTLE_MS = 150;
 
 const ListingDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
