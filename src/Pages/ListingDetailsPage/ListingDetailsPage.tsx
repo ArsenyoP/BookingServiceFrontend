@@ -7,10 +7,11 @@ import type { ListingResponseInterface } from "../../Interfaces/ListingInterface
 import axios from "axios";
 import { formatLocation } from "../../Utils/LocationUtils";
 import { StartRatingComponent } from "../../Components/Common/StarsRatingComponent";
-import ServerErrorPage from "../ServerErrorPage/ServerErrorPage";
+import ServerErrorPage from "../ErrorsPages/ServerErrorPage";
 import type { ReviewInterface } from "../../Interfaces/ReviewsInterfaces/ReviewInterface";
 import { AmenitiesSection } from "../../Components/ListingDetails/AmenitiesSection";
 import { ReviewsSection } from "../../Components/ListingDetails/ReviewsSection";
+import { NotFoundPage } from "../ErrorsPages/NotFoundPage";
 
 // FIX: винесено за межі компонента - масив більше не перестворюється на кожен рендер
 const IMAGES = [
@@ -27,12 +28,12 @@ const ListingDetailsPage = () => {
   const [reviews, setReviews] = useState<ReviewInterface[]>([]);
 
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<boolean>(false);
+  const [errorStatus, setErrorStatus] = useState<number | null>(null);
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
 
-  // FIX: guard проти спаму кліками - поки триває "перемикання", нові кліки ігноруються
+  // FIX: guard проти спаму кліками - якщо триває "перемикання", нові кліки ігноруються
   const isSwitching = useRef(false);
 
   useEffect(() => {
@@ -46,7 +47,13 @@ const ListingDetailsPage = () => {
         }
       } catch (err) {
         console.error("Error loading listing:", err);
-        if (!cancelled) setError(true);
+        if (!cancelled) {
+          if (axios.isAxiosError(err) && err.response) {
+            setErrorStatus(err.response.status);
+          } else {
+            setErrorStatus(500);
+          }
+        }
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -58,6 +65,7 @@ const ListingDetailsPage = () => {
         if (!cancelled) setReviews(result.data);
       } catch (err) {
         console.error("Error loading reviews:", err);
+        // Do not set error status for reviews failure - we just want to show the listing without reviews
       }
     };
 
@@ -116,8 +124,24 @@ const ListingDetailsPage = () => {
     );
   }
 
-  if (error || !listing) {
-    return <ServerErrorPage />;
+  if (errorStatus !== null) {
+    if (errorStatus === 404) {
+      return <NotFoundPage />;
+    } else {
+      return <ServerErrorPage />;
+    }
+  }
+
+  if (!listing) {
+    // Fallback in case listing is not set but not loading and no error (shouldn't happen)
+    return (
+      <>
+        <Header />
+        <main className="container">
+          <p>Loading details...</p>
+        </main>
+      </>
+    );
   }
 
   return (
