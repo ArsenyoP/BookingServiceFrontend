@@ -5,7 +5,8 @@
       "Bash(rtk wc *)",
       "Bash(type *)",
       "Bash(rtk read *)",
-      "Bash(rtk ls *)"
+      "Bash(rtk ls *)",
+      "Bash(rtk git *)"
     ]
   }
 }
