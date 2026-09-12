@@ -10,6 +10,7 @@ import ServerErrorPage from "../ServerErrorPage/ServerErrorPage";
 import type { ReviewInterface } from "../../Interfaces/ReviewsInterfaces/ReviewInterface";
 import { formatDate } from "../../Utils/DateUtils";
 import { AmenitiesSection } from "../../Components/ListingDetails/AmenitiesSection";
+import { ReviewsSection } from "../../Components/ListingDetails/ReviewsSection";
 
 const ListingDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -139,27 +140,8 @@ const ListingDetailsPage = () => {
           </section>
 
           <AmenitiesSection amenities={listing.amenities}/>
-
-          <section className="reviews">
-            <h2>
-              Reviews (<span id="review-count">{listing.reviewsCount}</span>)
-            </h2>
-            
-            <div className="review-list">
-              {reviews.map((review) => {
-                return <div className="review-card">
-                <div className="review-header">
-                  <h4>{review.userName}</h4>
-                  <div className="review-rating">
-                    <StartRatingComponent reviewsCount={1} averageRating={review.score}/>
-                  </div>
-                  <time dateTime="2024-05-12">{formatDate(review.createdAt)}</time>
-                </div>
-                <p>{review.text}</p>
-              </div>
-              })}
-            </div>
-          </section>
+              
+          <ReviewsSection reviews={reviews}/>
         </div>
       </main>
 
