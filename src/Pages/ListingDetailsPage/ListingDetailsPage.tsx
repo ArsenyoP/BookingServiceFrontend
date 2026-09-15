@@ -2,7 +2,7 @@ import { Header } from "../../Components/Common/Header";
 import { useEffect, useRef, useState } from "react";
 import "./ListingDetailsPageStyle.css";
 import "../../Components/ListingDetails/ListingGallery.css"; // FIX: підключає стилі .lightbox-overlay/.lightbox-content/..., яких бракувало
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import type { ListingResponseInterface } from "../../Interfaces/ListingInterfaces";
 import axios from "axios";
 import { formatLocation } from "../../Utils/LocationUtils";
@@ -29,6 +29,7 @@ const ListingDetailsPage = () => {
 
   const [loading, setLoading] = useState<boolean>(true);
   const [errorStatus, setErrorStatus] = useState<number | null>(null);
+  const navigate = useNavigate();
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
@@ -168,7 +169,7 @@ const ListingDetailsPage = () => {
                     alt={`Thumb ${idx + 1}`}
                     onClick={() => selectThumbnail(idx)}
                     className={currentIndex === idx ? "active" : ""}
-                    draggable={false} // FIX: те саме для мініатюр
+                    draggable={false} 
                   />
                 ))}
               </div>
@@ -191,7 +192,8 @@ const ListingDetailsPage = () => {
                 />
               </div>
               <p className="price"></p>
-              <button className="btn-primary btn-block">Look for rooms</button>
+              <button className="btn-primary btn-block" 
+                onClick={() => navigate(`/rooms/${id}`)}>Look for rooms</button>
             </div>
           </div>
 
