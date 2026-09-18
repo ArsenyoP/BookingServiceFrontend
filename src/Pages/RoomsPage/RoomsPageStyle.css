@@ -45,3 +45,11 @@
 .room-rating {
   margin: 10px 0;
 }
+
+.room-description {
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* Кількість рядків, після яких текст обрізається */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
