@@ -21,9 +21,14 @@ export const ListingGrid = ({listings}: ListingsGridProps) => {
               <h3>{listing.title}</h3>
               <p className="location">{formatLocation(listing.country, listing.city)}</p>
 
-              <StartRatingComponent
-               averageRating={listing.averageRating}
-               reviewsCount={listing.reviewsCount}/>
+              {listing.reviewsCount == 0 ? (
+                <p>There are no reviews yet</p>
+              ): <StartRatingComponent
+                    averageRating={listing.averageRating}
+                    reviewsCount={listing.reviewsCount}
+                  />
+              }
+              
             </div>
 
             <a href={`/listing-details/${listing.id}`} className="btn-primary">View Details</a>
