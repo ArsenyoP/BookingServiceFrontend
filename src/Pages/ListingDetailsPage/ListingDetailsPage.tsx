@@ -186,10 +186,13 @@ const ListingDetailsPage = () => {
                 )}
               </p>
               <div className="product-rating-container">
-                <StartRatingComponent
-                  averageRating={listing.averageRating}
-                  reviewsCount={listing.reviewsCount}
-                />
+                {listing.reviewsCount == 0 ? (
+                  <p>There are no reviews yet</p>
+                ) : <StartRatingComponent
+                      averageRating={listing.averageRating}
+                      reviewsCount={listing.reviewsCount}
+                    />}
+                
               </div>
               <p className="price"></p>
               <button className="btn-primary btn-block" 

@@ -190,10 +190,14 @@ const RoomDetailsPage = () => {
                 )}
               </p> */}
               <div className="product-rating-container">
-                <StartRatingComponent
-                  averageRating={room.averageRating}
-                  reviewsCount={room.reviewsCount}
-                />
+              {room.reviewsCount == 0 ? (
+                  <p>There no reviews yet</p>) : 
+                  (
+                      <StartRatingComponent
+                        averageRating={room.averageRating}
+                        reviewsCount={room.reviewsCount}
+                      />
+                )}
               </div>
               <p className="price"></p>
               <button className="btn-primary btn-block" 
@@ -208,7 +212,7 @@ const RoomDetailsPage = () => {
 
           <AmenitiesSection amenities={room.amenities} />
 
-          <ReviewsSection reviews={reviews} />
+          
         </div>
       </main>
 
