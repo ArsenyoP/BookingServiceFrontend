@@ -100,10 +100,15 @@ const RoomsPage = () => {
           </span>
         </div>
         <div className="room-rating">
-          <StartRatingComponent
-            averageRating={room.averageRating}
-            reviewsCount={room.reviewsCount}
+          {room.reviewsCount == 0 ? (
+            <p>There no reviews yet</p>
+          ) : (
+            <StartRatingComponent
+              averageRating={room.averageRating}
+              reviewsCount={room.reviewsCount}
           />
+          )}
+          
         </div>
         <button
           className="btn-primary btn-block"
