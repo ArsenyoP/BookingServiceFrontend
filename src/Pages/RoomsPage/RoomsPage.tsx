@@ -1,7 +1,7 @@
 import { Header } from "../../Components/Common/Header";
 import { useEffect, useState } from "react";
 import "./RoomsPageStyle.css";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import type { RoomInterface } from "../../Interfaces/RoomInterface";
 import axios from "axios";
 import { NotFoundPage } from "../ErrorsPages/NotFoundPage";
@@ -14,6 +14,8 @@ const RoomsPage = () => {
   const [rooms, setRooms] = useState<RoomInterface[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [errorStatus, setErrorStatus] = useState<number | null>(null);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     let cancelled = false;
@@ -76,6 +78,8 @@ const RoomsPage = () => {
           ) : (
             <div className="rooms-grid">
   {rooms.map((room) => (
+
+
     <div key={room.id} className="room-card">
       <div className="room-image-container">
         <img
@@ -103,7 +107,7 @@ const RoomsPage = () => {
         </div>
         <button
           className="btn-primary btn-block"
-          onClick={() => {}}
+          onClick={() => navigate(`/room-details/${room.id}`)}
         >
           Discover
         </button>
